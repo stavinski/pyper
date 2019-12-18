@@ -24,19 +24,20 @@ def main(args):
             for name in f:
                 pipes.add(name.rstrip())
 
+    print("[*] finding named pipes for: {}".format(args.target))
 
     conn = MYSMB(args.target)
     conn.get_socket().setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     conn.login(username, password, maxBufferSize=4356)
 	
     tid = conn.tree_connect_andx("\\\\"+conn.get_remote_host()+"\\"+"IPC$")
-    for pipe in PIPES:
+    for pipe in pipes:
         try:
             fid = conn.nt_create_andx(tid, pipe)
             conn.close(tid, fid)
-            print("[+] FOUND: {}".format(pipe))
+            print("\x1b[0;32;40m[+] {}\x1b[0m".format(pipe))
         except smb.SessionError as e:
-            print("[-] NOT EXIST: {}".format(pipe))
+            print("\x1b[0;31;40m[-] {}\x1b[0m".format(pipe))
             continue
 
     conn.disconnect_tree(tid)
