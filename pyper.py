@@ -25,7 +25,7 @@ def main(args):
                 pipes.add(name.rstrip())
 
 
-    conn = MYSMB(target)
+    conn = MYSMB(args.target)
     conn.get_socket().setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
     conn.login(username, password, maxBufferSize=4356)
 	
