@@ -20,9 +20,10 @@ def main(args):
         password = args.password
 
     if args.wordlist:
+        pipes = []
         with open(args.wordlist, "r") as f:
             for name in f:
-                pipes.add(name.rstrip())
+                pipes.append(name.rstrip())
 
     print("[*] finding named pipes for: {}".format(args.target))
 
